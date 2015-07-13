@@ -69,7 +69,7 @@
                 <Grid Name="SudokuViewGrid"/>
             </Border>
             <TextBlock Name="CommentBlock" Grid.Column="0" Grid.Row="1" TextWrapping="Wrap" TextAlignment="Center"/>
-            <Button Name="SolveButton" Grid.Row="1" Grid.Column="1">Solve it !</Button>
+            <Button Name="SolveButton" Grid.Row="1" Grid.Column="1" Click="SolveButton_OnClick">Solve it !</Button>
             <Border Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" BorderThickness="1" BorderBrush="Black">
                 <TextBlock Name="MessageLogBlock" ></TextBlock>
             </Border>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,32 +38,8 @@ namespace SudokuCracker.Views
             {
                 return;
             }
-
             Grille selected = (Grille)(e.AddedItems[0]);
-            int gridSize = selected.Symbols.Count();
-            for (int i = 0; i < gridSize; i++)
-            {
-                SudokuViewGrid.RowDefinitions.Add(new RowDefinition());
-                SudokuViewGrid.ColumnDefinitions.Add(new ColumnDefinition());
-            }
-
-            for (int i = 0; i < gridSize; i++)
-            {
-                for (int j = 0; j < gridSize; j++)
-                {
-                    FrameworkElement elem = CreateCaseView(selected.Cases[i, j], i, j);
-                    SudokuViewGrid.Children.Add(elem);
-
-                }
-            }
-            CommentBlock.Text = selected.Comment;
-            if (selected.ErrorMessagesList.Count > 0)
-            {
-                foreach (var msg in selected.ErrorMessagesList)
-                {
-                    MessageLogBlock.Text += msg + '\n';
-                }
-            }
+            RefreshGridLayout();
         }
 
         private FrameworkElement CreateCaseView(Case @case, int i, int j)
@@ -70,7 +47,7 @@ namespace SudokuCracker.Views
             Border border = new Border();
             border.BorderBrush = Brushes.Black;
             border.BorderThickness = new Thickness(1);
-            string text = (@case.Value.ToString().Equals(Case.EmptyCase) ? "" : @case.Value.ToString());
+            string text = (@case.Value.Equals(Case.EmptyCase) ? "" : @case.Value.ToString());
             border.Child = new TextBlock()
             {
                 Text = text, 
@@ -88,11 +65,57 @@ namespace SudokuCracker.Views
             SudokuViewGrid.RowDefinitions.Clear();
             SudokuViewGrid.ColumnDefinitions.Clear();
             MessageLogBlock.Text = String.Empty;
+            CommentBlock.Text = String.Empty;
         }
 
         private void DeleteGridButton_OnClick(object sender, RoutedEventArgs e)
         {
             GridList.Remove((Grille) GridListBox.SelectedItem);
+        }
+
+        private void SolveButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            Backtracker solver = new Backtracker((Grille)GridListBox.SelectedItem);
+            Stopwatch time = new Stopwatch();
+            time.Start();
+            bool res = solver.Solve();
+            time.Stop();
+            GridListBox.SelectedItem = solver._unSolvedGrid;
+            RefreshGridLayout();
+            MessageLogBlock.Text = time.ElapsedMilliseconds.ToString();
+        }
+
+        private void RefreshGridLayout()
+        {
+            ClearSudokuGridView();
+            Grille grid = (Grille) GridListBox.SelectedItem;
+            if(grid == null)
+                return;
+
+            int gridSize = grid.Symbols.Count();
+            for (int i = 0; i < gridSize; i++)
+            {
+                SudokuViewGrid.RowDefinitions.Add(new RowDefinition());
+                SudokuViewGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            }
+
+            for (int i = 0; i < gridSize; i++)
+            {
+                for (int j = 0; j < gridSize; j++)
+                {
+                    FrameworkElement elem = CreateCaseView(grid.Cases[i, j], i, j);
+                    SudokuViewGrid.Children.Add(elem);
+                }
+            }
+
+            CommentBlock.Text = grid.Comment;
+            if (grid.ErrorMessagesList.Count > 0)
+            {
+                foreach (var msg in grid.ErrorMessagesList)
+                {
+                    MessageLogBlock.Text += msg + '\n';
+                }
+            }
         }
     }
 }

@@ -74,14 +74,7 @@ namespace SudokuCracker.Views
                     }
 
                     SudokuValidator validator = new SudokuValidator(grid.Symbols, tempLines, ref grid);
-                    if (validator.ExecuteTests())
-                    {
-                        Console.WriteLine("Grille " + grid.Name + " validée (");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Grille " + grid.Name + " incorrecte");
-                    }
+                    validator.ExecuteTests();
                     grids.Add(grid);
                 }
             }

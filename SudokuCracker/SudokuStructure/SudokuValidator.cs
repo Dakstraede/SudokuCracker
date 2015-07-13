@@ -78,7 +78,7 @@ namespace SudokuCracker.SudokuStructure
             var i = 1;
             foreach (var line in _lines)
             {
-                if (line.Replace(Case.EmptyCase, "").Distinct().Count() != line.Replace(Case.EmptyCase, "").Length)
+                if (line.Replace(Case.EmptyCase.ToString(), "").Distinct().Count() != line.Replace(Case.EmptyCase.ToString(), "").Length)
                 {
                     ErrorMessagesList.Add("Doublons de caractères à la ligne "+i);
                     result = false;
@@ -89,7 +89,7 @@ namespace SudokuCracker.SudokuStructure
                 }
                 foreach (char c in line)
                 {
-                    if (!_characterSet.Contains(c) && c.ToString() != Case.EmptyCase)
+                    if (!_characterSet.Contains(c) && c.ToString() != Case.EmptyCase.ToString())
                     {
                         ErrorMessagesList.Add("Symbole absent du jeu de caractères à la ligne "+i);
                         result = false;
@@ -128,7 +128,7 @@ namespace SudokuCracker.SudokuStructure
             for (int idx = 0; idx < count; idx++)
             {
                 string currentLine = new string(columnTab[idx]);
-                if (currentLine.Replace(Case.EmptyCase, "").Distinct().Count() != currentLine.Replace(Case.EmptyCase, "").Length)
+                if (currentLine.Replace(Case.EmptyCase.ToString(), "").Distinct().Count() != currentLine.Replace(Case.EmptyCase.ToString(), "").Length)
                 {
                     ErrorMessagesList.Add("Doublon de symbole à la colonne " + (idx + 1));
                     result = false;
@@ -162,7 +162,7 @@ namespace SudokuCracker.SudokuStructure
             int idx = 1;
             foreach (var region in regionTab)
             {
-                if (region.Replace(Case.EmptyCase, "").Distinct().Count() != region.Replace(Case.EmptyCase, "").Length)
+                if (region.Replace(Case.EmptyCase.ToString(), "").Distinct().Count() != region.Replace(Case.EmptyCase.ToString(), "").Length)
                 {
                     ErrorMessagesList.Add("Doublon de symboles dans la région "+idx);
                     result = false;
@@ -171,17 +171,5 @@ namespace SudokuCracker.SudokuStructure
 
             return result;
         }
-
-        /// <summary>
-        /// Displays errors in console
-        /// </summary>
-        public void PrintError()
-        {
-            foreach (var error in ErrorMessagesList)
-            {
-                Console.WriteLine(error);
-            }
-        }
-        
     }
 }
