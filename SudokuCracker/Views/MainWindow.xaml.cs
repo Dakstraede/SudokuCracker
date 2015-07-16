@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
+using Microsoft.Win32;
 using SudokuCracker.SudokuStructure;
 
 namespace SudokuCracker.Views
@@ -22,7 +20,7 @@ namespace SudokuCracker.Views
 
         private void FileChoose_OnClick(object sender, RoutedEventArgs e)
         {
-            var dlg = new Microsoft.Win32.OpenFileDialog
+            var dlg = new OpenFileDialog
             {
                 DefaultExt = App.DefaultSupportedExtension,
                 Filter = App.SupportedExtensionFilter
@@ -46,8 +44,8 @@ namespace SudokuCracker.Views
             string fileName = SudFileBox.Text;
             if (!File.Exists(fileName))
             {
-                MessageBox.Show("File not found",
-                    "The file you specified is not reachable anymore",
+                MessageBox.Show("The file you specified is not reachable anymore",
+                    "File not found",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 return;
@@ -57,9 +55,6 @@ namespace SudokuCracker.Views
 
             try
             {
-
-                var lineCount = File.ReadLines(fileName).Count();
-
                 var file = new StreamReader(fileName);
                 string line;
                 
@@ -78,9 +73,12 @@ namespace SudokuCracker.Views
                     grids.Add(grid);
                 }
             }
-            catch (Exception exception)
+            catch (Exception)
             {
-                Console.WriteLine(exception.Message);
+                MessageBox.Show("The file you specified contains format errors that can not be handled",
+                    "Invalid file",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
                 return;
             }
 

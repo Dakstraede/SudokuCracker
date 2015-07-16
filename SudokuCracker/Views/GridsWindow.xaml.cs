@@ -3,16 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using SudokuCracker.SudokuStructure;
 
 namespace SudokuCracker.Views
@@ -23,6 +16,7 @@ namespace SudokuCracker.Views
     public partial class GridsWindow : Window
     {
         public ObservableCollection<Grille> GridList { get; private set; }
+        public Grille SelectedItem { get; set; }
 
         public GridsWindow(List<Grille> list )
         {
@@ -32,13 +26,12 @@ namespace SudokuCracker.Views
         }
 
         private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ClearSudokuGridView();
+        {     
             if (e.AddedItems.Count == 0)
             {
+                ClearSudokuGridView();
                 return;
             }
-            Grille selected = (Grille)(e.AddedItems[0]);
             RefreshGridLayout();
         }
 
@@ -53,6 +46,7 @@ namespace SudokuCracker.Views
                 Text = text, 
                 TextAlignment = TextAlignment.Center, 
                 VerticalAlignment = VerticalAlignment.Center
+                
             };
             Grid.SetColumn(border, j);
             Grid.SetRow(border, i);
@@ -61,6 +55,7 @@ namespace SudokuCracker.Views
 
         private void ClearSudokuGridView()
         {
+            SolveButton.IsEnabled = false;
             SudokuViewGrid.Children.Clear();
             SudokuViewGrid.RowDefinitions.Clear();
             SudokuViewGrid.ColumnDefinitions.Clear();
@@ -80,9 +75,15 @@ namespace SudokuCracker.Views
             time.Start();
             bool res = solver.Solve();
             time.Stop();
-            GridListBox.SelectedItem = solver._unSolvedGrid;
+            if (res)
+            {
+                Grille solving = solver._unSolvedGrid;
+                solving.IsSolved = true;
+                GridListBox.SelectedItem = solver._unSolvedGrid;
+            }
+            
             RefreshGridLayout();
-            MessageLogBlock.Text = time.ElapsedMilliseconds.ToString();
+            MessageLogBlock.Text = String.Format("Sudoku solved in : {0} ms",time.ElapsedMilliseconds);
         }
 
         private void RefreshGridLayout()
@@ -91,7 +92,7 @@ namespace SudokuCracker.Views
             Grille grid = (Grille) GridListBox.SelectedItem;
             if(grid == null)
                 return;
-
+            SolveButton.IsEnabled = grid.IsValid && !grid.IsSolved;
             int gridSize = grid.Symbols.Count();
             for (int i = 0; i < gridSize; i++)
             {

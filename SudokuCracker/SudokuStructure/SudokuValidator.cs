@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace SudokuCracker.SudokuStructure
@@ -50,13 +49,13 @@ namespace SudokuCracker.SudokuStructure
 
             if (_characterSet.Distinct().Count() != _characterSet.Count())
             {
-                ErrorMessagesList.Add("Il y a des doublons dans le jeu de caractères");
+                ErrorMessagesList.Add("There are doubles in the characters set");
                 result = false;
             }
 
             if (Math.Sqrt(_characterSet.Count()) % 1 != 0)
             {
-                ErrorMessagesList.Add("Le jeu de caractères ne permet pas de constituer un carré parfait");
+                ErrorMessagesList.Add("The provided character set can not create a perfect square");
                 result = false;
             }
             return result;
@@ -71,7 +70,7 @@ namespace SudokuCracker.SudokuStructure
             var result = true;
             if (Math.Sqrt(_lines.Count())%1 != 0)
             {
-                ErrorMessagesList.Add("La grille fournie ne forme pas un carré parfait");
+                ErrorMessagesList.Add("The provided grid does not form a perfect square");
                 result = false;
             }
 
@@ -80,18 +79,18 @@ namespace SudokuCracker.SudokuStructure
             {
                 if (line.Replace(Case.EmptyCase.ToString(), "").Distinct().Count() != line.Replace(Case.EmptyCase.ToString(), "").Length)
                 {
-                    ErrorMessagesList.Add("Doublons de caractères à la ligne "+i);
+                    ErrorMessagesList.Add("Doubles at line "+i);
                     result = false;
                 }
                 if (line.Length != _characterSet.Count())
                 {
-                    ErrorMessagesList.Add("La ligne "+i+" est de taille incorrecte");
+                    ErrorMessagesList.Add("The line "+i+" has an incorrect size");
                 }
                 foreach (char c in line)
                 {
                     if (!_characterSet.Contains(c) && c.ToString() != Case.EmptyCase.ToString())
                     {
-                        ErrorMessagesList.Add("Symbole absent du jeu de caractères à la ligne "+i);
+                        ErrorMessagesList.Add("A symbol is not in the character set at line "+i);
                         result = false;
                     }
                 }
@@ -130,7 +129,7 @@ namespace SudokuCracker.SudokuStructure
                 string currentLine = new string(columnTab[idx]);
                 if (currentLine.Replace(Case.EmptyCase.ToString(), "").Distinct().Count() != currentLine.Replace(Case.EmptyCase.ToString(), "").Length)
                 {
-                    ErrorMessagesList.Add("Doublon de symbole à la colonne " + (idx + 1));
+                    ErrorMessagesList.Add("Symbol doubles at column " + (idx + 1));
                     result = false;
                 }
             }
@@ -164,7 +163,7 @@ namespace SudokuCracker.SudokuStructure
             {
                 if (region.Replace(Case.EmptyCase.ToString(), "").Distinct().Count() != region.Replace(Case.EmptyCase.ToString(), "").Length)
                 {
-                    ErrorMessagesList.Add("Doublon de symboles dans la région "+idx);
+                    ErrorMessagesList.Add("Symbol doubles in region "+idx);
                     result = false;
                 }
             }

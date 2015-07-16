@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SudokuCracker.SudokuStructure
 {
@@ -17,12 +14,6 @@ namespace SudokuCracker.SudokuStructure
         {
             _unSolvedGrid = grid;
             _size = grid.Symbols.Count();
-        }
-
-        private class Node
-        {
-            private int _i, _j;
-            private int _possibleValues;
         }
 
         public bool Solve(int position = 0)
