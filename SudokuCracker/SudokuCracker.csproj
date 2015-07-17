@@ -55,6 +55,7 @@
     </ApplicationDefinition>
     <Compile Include="SudokuStructure\Backtracker.cs" />
     <Compile Include="SudokuStructure\Case.cs" />
+    <Compile Include="SudokuStructure\Generator.cs" />
     <Compile Include="SudokuStructure\Grille.cs" />
     <Compile Include="SudokuStructure\SudokuValidator.cs" />
     <Compile Include="Views\GridsWindow.xaml.cs">
@@ -93,6 +94,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

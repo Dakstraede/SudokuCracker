@@ -7,12 +7,12 @@ namespace SudokuCracker.SudokuStructure
     public class Backtracker
     {
 
-        public Grille _unSolvedGrid;
+        public Grille UnsolvedGrid;
         private readonly int _size;
 
         public Backtracker(Grille grid)
         {
-            _unSolvedGrid = grid;
+            UnsolvedGrid = grid;
             _size = grid.Symbols.Count();
         }
 
@@ -22,21 +22,20 @@ namespace SudokuCracker.SudokuStructure
                 return true;
 
             int i = position/_size, j = position%_size;
-
-            if (!_unSolvedGrid.Cases[i, j].Value.Equals(Case.EmptyCase))
+            if (!UnsolvedGrid.Cases[i, j].Value.Equals(Case.EmptyCase))
                 return Solve(position + 1);
 
-            foreach (char symbol in _unSolvedGrid.Symbols)
+            foreach (char symbol in UnsolvedGrid.Symbols)
             {
                 if (AbsentOnColumn(symbol, j) && AbsentOnRow(symbol, i) && AbsentOnRegion(symbol, i, j))
                 {
-                    _unSolvedGrid.Cases[i, j].Value = symbol;
+                    UnsolvedGrid.Cases[i, j].Value = symbol;
 
                     if (Solve(position + 1))
                         return true;
                 }
             }
-            _unSolvedGrid.Cases[i, j].Value = Case.EmptyCase;
+            UnsolvedGrid.Cases[i, j].Value = Case.EmptyCase;
             return false;
         }
 
@@ -45,7 +44,7 @@ namespace SudokuCracker.SudokuStructure
         {
             for (int j = 0; j < _size; j++)
             {
-                if (_unSolvedGrid.Cases[row, j].Value == value)
+                if (UnsolvedGrid.Cases[row, j].Value == value)
                     return false;
             }
             return true;
@@ -55,7 +54,7 @@ namespace SudokuCracker.SudokuStructure
         {
             for (int i = 0; i < _size; i++)
             {
-                if (_unSolvedGrid.Cases[i, col].Value == value)
+                if (UnsolvedGrid.Cases[i, col].Value == value)
                     return false;
             }
             return true;
@@ -63,12 +62,11 @@ namespace SudokuCracker.SudokuStructure
 
         private bool AbsentOnRegion(char value, int line, int col)
         {
-            int regionSize = (int)Math.Sqrt(_unSolvedGrid.Symbols.Count());
-            int _i = line - (line%regionSize), _j = col - (col%regionSize);
-
-            for (line = _i; line < (_i + regionSize); line++)
-                for(col = _j; col < _j+regionSize; col++)
-                    if (_unSolvedGrid.Cases[line, col].Value == value)
+            int regionSize = (int)Math.Sqrt(UnsolvedGrid.Symbols.Count());
+            int i = line - (line%regionSize), j = col - (col%regionSize);
+            for (line = i; line < i + regionSize; line++)
+                for(col = j; col < j+regionSize; col++)
+                    if (UnsolvedGrid.Cases[line, col].Value == value)
                         return false;
             return true;
         }

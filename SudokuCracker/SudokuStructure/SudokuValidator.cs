@@ -9,12 +9,29 @@ namespace SudokuCracker.SudokuStructure
         public  List<string> ErrorMessagesList = new List<string>();
         private readonly IEnumerable<char> _characterSet;
         private readonly IEnumerable<string> _lines;
-        private Grille _grid;
+        public Grille _grid;
 
         public SudokuValidator(IEnumerable<char> characterSet, IEnumerable<string> lines, ref Grille grid)
         {
             _characterSet = characterSet;
             _lines = lines;
+            _grid = grid;
+        }
+
+        public SudokuValidator(Grille grid)
+        {
+             var lines = new List<string>();
+            for (int i = 0; i < 9; i++)
+            {
+                string line = "";
+                for (int j = 0; j < 9; j++)
+                {
+                    line += grid.Cases[i, j].Value;
+                }
+                lines.Add(line);
+            }
+            _lines = lines;
+            _characterSet = grid.Symbols;
             _grid = grid;
         }
 
@@ -84,7 +101,8 @@ namespace SudokuCracker.SudokuStructure
                 }
                 if (line.Length != _characterSet.Count())
                 {
-                    ErrorMessagesList.Add("The line "+i+" has an incorrect size");
+                    ErrorMessagesList.Add(String.Format("The line {0} has an incorrect size", i));
+                    result = false;
                 }
                 foreach (char c in line)
                 {
@@ -129,7 +147,7 @@ namespace SudokuCracker.SudokuStructure
                 string currentLine = new string(columnTab[idx]);
                 if (currentLine.Replace(Case.EmptyCase.ToString(), "").Distinct().Count() != currentLine.Replace(Case.EmptyCase.ToString(), "").Length)
                 {
-                    ErrorMessagesList.Add("Symbol doubles at column " + (idx + 1));
+                    ErrorMessagesList.Add(String.Format("Symbol doubles at column {0}", (idx + 1)));
                     result = false;
                 }
             }
@@ -163,7 +181,7 @@ namespace SudokuCracker.SudokuStructure
             {
                 if (region.Replace(Case.EmptyCase.ToString(), "").Distinct().Count() != region.Replace(Case.EmptyCase.ToString(), "").Length)
                 {
-                    ErrorMessagesList.Add("Symbol doubles in region "+idx);
+                    ErrorMessagesList.Add(String.Format("Symbol doubles in region {0}", idx));
                     result = false;
                 }
             }

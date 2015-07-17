@@ -30,11 +30,36 @@ namespace SudokuCracker.SudokuStructure
         {
             int count = Symbols.Count();
             Cases = new Case[count, count];
-            for (int i = 0; i < Symbols.Count(); i++)
+            for (int i = 0; i < count; i++)
             {
-                for (int j = 0; j < Symbols.Count(); j++)
+                for (int j = 0; j < count; j++)
                 {
                     Cases[i,j] = new Case(lines.ElementAt(i).ElementAt(j));
+                }
+            }
+        }
+
+        public void InitializeCases()
+        {
+            int count = Symbols.Count();
+            Cases= new Case[count, count];
+            for (int i = 0; i < count; i++)
+            {
+                for (int j = 0; j < count; j++)
+                {
+                    Cases[i,j] = new Case(Case.EmptyCase);
+                }
+            }
+        }
+
+        public void InitAllPossibleValues()
+        {
+            int count = Symbols.Count();
+            for (int i = 0; i < count; i++)
+            {
+                for (int j = 0; j < count; j++)
+                {
+                    Cases[i, j].Hypothesies = new List<char>(Symbols);
                 }
             }
         }

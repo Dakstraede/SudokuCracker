@@ -70,20 +70,24 @@ namespace SudokuCracker.Views
 
         private void SolveButton_OnClick(object sender, RoutedEventArgs e)
         {
+            var item = (Grille) GridListBox.SelectedItem;
             Backtracker solver = new Backtracker((Grille)GridListBox.SelectedItem);
             Stopwatch time = new Stopwatch();
             time.Start();
             bool res = solver.Solve();
+
             time.Stop();
+            
             if (res)
             {
-                Grille solving = solver._unSolvedGrid;
+                Grille solving = solver.UnsolvedGrid;
                 solving.IsSolved = true;
-                GridListBox.SelectedItem = solver._unSolvedGrid;
+                GridListBox.SelectedItem = solver.UnsolvedGrid;
             }
             
             RefreshGridLayout();
-            MessageLogBlock.Text = String.Format("Sudoku solved in : {0} ms",time.ElapsedMilliseconds);
+
+            MessageLogBlock.Text = String.Format("Sudoku solved in : {0} ms -> {1}",time.ElapsedMilliseconds, ((Grille)GridListBox.SelectedItem).Name);
         }
 
         private void RefreshGridLayout()
@@ -117,6 +121,24 @@ namespace SudokuCracker.Views
                     MessageLogBlock.Text += msg + '\n';
                 }
             }
+        }
+
+        private void Gen9Button_OnClick(object sender, RoutedEventArgs e)
+        {
+            Generate(Generator.Sizes.Size9);
+        }
+
+        private void Gen16Button_OnClick(object sender, RoutedEventArgs e)
+        {
+            Generate(Generator.Sizes.Size16);
+        }
+
+        private void Generate(Generator.Sizes size)
+        {
+            var grid = Generator.Generate(size);
+            GridList.Add(grid);
+            GridListBox.SelectedIndex = GridListBox.Items.Count - 1;
+            GridListBox.ScrollIntoView(GridListBox.SelectedItem);
         }
     }
 }
