@@ -70,8 +70,7 @@ namespace SudokuCracker.Views
 
         private void SolveButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var item = (Grille) GridListBox.SelectedItem;
-            Backtracker solver = new Backtracker((Grille)GridListBox.SelectedItem);
+            var solver = new Optibacktracker((Grille)GridListBox.SelectedItem);
             Stopwatch time = new Stopwatch();
             time.Start();
             bool res = solver.Solve();
@@ -86,8 +85,9 @@ namespace SudokuCracker.Views
             }
             
             RefreshGridLayout();
+            var validator = new SudokuValidator(solver.UnsolvedGrid);
 
-            MessageLogBlock.Text = String.Format("Sudoku solved in : {0} ms -> {1}",time.ElapsedMilliseconds, ((Grille)GridListBox.SelectedItem).Name);
+            MessageLogBlock.Text = String.Format("Sudoku solved in : {0} ms -> {1} valid : {2}",time.ElapsedMilliseconds, ((Grille)GridListBox.SelectedItem).Name, validator.ExecuteTests());
         }
 
         private void RefreshGridLayout()
@@ -112,8 +112,16 @@ namespace SudokuCracker.Views
                     SudokuViewGrid.Children.Add(elem);
                 }
             }
-
-            CommentBlock.Text = grid.Comment;
+            int count = 0;
+            for (int i = 0; i < gridSize; i++)
+            {
+                for (int j = 0; j < gridSize; j++)
+                {
+                    if (grid.Cases[i, j].Value != Case.EmptyCase)
+                        count++;
+                }
+            }
+            CommentBlock.Text = grid.Comment+" "+count;
             if (grid.ErrorMessagesList.Count > 0)
             {
                 foreach (var msg in grid.ErrorMessagesList)

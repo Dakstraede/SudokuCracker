@@ -22,11 +22,10 @@ namespace SudokuCracker.SudokuStructure
 
             Grille grid = new Grille("This is a generated grid", "GenGrid "+NbGrids, DateTime.Now.ToShortDateString(), chosen.Shuffle().ToArray());
             grid.InitializeCases();
-            grid.InitAllPossibleValues();
             
 
 
-            Backtracker solver = new Backtracker(grid);
+            var solver = new Optibacktracker(grid);
             solver.Solve();
             NbGrids++;
             return MakeHoles(solver.UnsolvedGrid);
@@ -52,7 +51,7 @@ namespace SudokuCracker.SudokuStructure
         {
             Random rd = new Random();
             int count = grid.Symbols.Count();
-            int nbHoles = (int) (count*count*0.6);
+            int nbHoles = (int)(count*count*0.6);
 
             int making = 0;
             while (making < nbHoles)

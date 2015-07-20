@@ -53,10 +53,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="SudokuStructure\Backtracker.cs" />
     <Compile Include="SudokuStructure\Case.cs" />
     <Compile Include="SudokuStructure\Generator.cs" />
     <Compile Include="SudokuStructure\Grille.cs" />
+    <Compile Include="SudokuStructure\Optibacktracker.cs" />
     <Compile Include="SudokuStructure\SudokuValidator.cs" />
     <Compile Include="Views\GridsWindow.xaml.cs">
       <DependentUpon>GridsWindow.xaml</DependentUpon>

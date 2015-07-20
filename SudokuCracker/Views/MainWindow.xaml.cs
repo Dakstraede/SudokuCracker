@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Win32;
 using SudokuCracker.SudokuStructure;
@@ -51,7 +53,8 @@ namespace SudokuCracker.Views
             }
 
             List<Grille> grids = new List<Grille>();
-
+            Stopwatch watch  =new Stopwatch();
+            watch.Start();
             try
             {
                 var file = new StreamReader(fileName);
@@ -67,7 +70,7 @@ namespace SudokuCracker.Views
                         tempLines[j] = file.ReadLine();
                     }
 
-                    SudokuValidator validator = new SudokuValidator(grid.Symbols, tempLines, ref grid);
+                    var validator = new SudokuValidator(grid.Symbols, tempLines, ref grid);
                     validator.ExecuteTests();
                     grids.Add(grid);
                 }
@@ -80,7 +83,6 @@ namespace SudokuCracker.Views
                     MessageBoxImage.Error);
                 return;
             }
-
             GridsWindow gridWindow = new GridsWindow(grids);
             gridWindow.Show();
             Close();

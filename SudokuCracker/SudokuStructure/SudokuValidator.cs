@@ -21,10 +21,11 @@ namespace SudokuCracker.SudokuStructure
         public SudokuValidator(Grille grid)
         {
              var lines = new List<string>();
-            for (int i = 0; i < 9; i++)
+            int count = grid.Cases.GetLength(1);
+            for (int i = 0; i < count; i++)
             {
                 string line = "";
-                for (int j = 0; j < 9; j++)
+                for (int j = 0; j < count; j++)
                 {
                     line += grid.Cases[i, j].Value;
                 }
