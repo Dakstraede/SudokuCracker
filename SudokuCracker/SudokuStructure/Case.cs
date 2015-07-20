@@ -6,14 +6,15 @@ namespace SudokuCracker.SudokuStructure
     {
         public const char EmptyCase = '.';
         public char Value { get; set; }
-        public int NumberHypothesis { get; private set; }
+        public int NumberHypothesis { get; set; }
         public List<char> Hypothesies { get; set; }
         public bool IsSolvedCase { get; set; }
+        public bool IsCheckedForPossibilities { get; set; }
 
         public Case(char c)
         {
             Value = c;
-            NumberHypothesis = 0;
+            IsCheckedForPossibilities = false;
         }
     }
 }
