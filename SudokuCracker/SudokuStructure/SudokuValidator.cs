@@ -9,6 +9,7 @@ namespace SudokuCracker.SudokuStructure
         public  List<string> ErrorMessagesList = new List<string>();
         private readonly IEnumerable<char> _characterSet;
         private readonly IEnumerable<string> _lines;
+        private bool _isAlreadySolved = true;
         public Grille _grid;
 
         public SudokuValidator(IEnumerable<char> characterSet, IEnumerable<string> lines, ref Grille grid)
@@ -53,6 +54,10 @@ namespace SudokuCracker.SudokuStructure
                 {
                     _grid.IsValid = false;
                 }
+                else
+                {
+                    _grid.IsSolved = _isAlreadySolved;
+                }
             }
         }
 
@@ -95,6 +100,8 @@ namespace SudokuCracker.SudokuStructure
             var i = 1;
             foreach (var line in _lines)
             {
+                if (line.Contains(Case.EmptyCase))
+                    _isAlreadySolved = false;
                 if (line.Replace(Case.EmptyCase.ToString(), "").Distinct().Count() != line.Replace(Case.EmptyCase.ToString(), "").Length)
                 {
                     ErrorMessagesList.Add("Doubles at line "+i);

@@ -54,6 +54,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="SudokuStructure\Case.cs" />
+    <Compile Include="SudokuStructure\FileSaver.cs" />
     <Compile Include="SudokuStructure\Generator.cs" />
     <Compile Include="SudokuStructure\Grille.cs" />
     <Compile Include="SudokuStructure\Optibacktracker.cs" />
@@ -111,6 +112,9 @@
   <ItemGroup>
     <Resource Include="Images\clean.png" />
     <Resource Include="Images\cross-red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\save.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

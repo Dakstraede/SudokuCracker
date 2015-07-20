@@ -148,5 +148,20 @@ namespace SudokuCracker.Views
             GridListBox.SelectedIndex = GridListBox.Items.Count - 1;
             GridListBox.ScrollIntoView(GridListBox.SelectedItem);
         }
+
+        private void SaveButton_Onclick(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.FileName = "Solved Sudokus";
+            dlg.DefaultExt = App.DefaultSupportedExtension;
+            dlg.Filter = App.SupportedExtensionFilter;
+
+            bool? result = dlg.ShowDialog();
+
+            if (result == true)
+            {
+                FileSaver.SaveSolvedGrids(GridList, dlg.FileName);
+            }
+        }
     }
 }

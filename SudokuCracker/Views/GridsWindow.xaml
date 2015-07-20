@@ -21,7 +21,13 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <Button Grid.Row="0" Grid.ColumnSpan="2" Height="30" Click="DeleteGridButton_OnClick">Delete Grid</Button>
+            <Button Grid.Row="0" Grid.Column="0" Click="SaveButton_Onclick">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Images/save.png"/>
+                    <Label>Save solved grids</Label>
+                </StackPanel>
+            </Button>
+            <Button Grid.Row="0" Grid.Column="1"  Height="30" Click="DeleteGridButton_OnClick">Delete Grid</Button>
             <Button Grid.Row="1" Height="30" Click="Gen9Button_OnClick" Name="Gen9Button">Gen9</Button>
             <Button Grid.Row="1" Grid.Column="1" Click="Gen16Button_OnClick" Name="Gen16Button">Gen16</Button>
             <ListBox Name="GridListBox" Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding GridList}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" HorizontalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible" SelectionChanged="Selector_OnSelectionChanged">
