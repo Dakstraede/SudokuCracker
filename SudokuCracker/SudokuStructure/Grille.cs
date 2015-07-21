@@ -59,6 +59,21 @@ namespace SudokuCracker.SudokuStructure
             }
         }
 
+        public void RefreshDifficulty()
+        {
+            Difficulty = 0;
+            for (int i = 0; i < Size; i++)
+            {
+                for (int j = 0; j < Size; j++)
+                {
+                    if (Cases[i, j].Value != Case.EmptyCase)
+                    {
+                        Difficulty++;
+                    }
+                }
+            }
+        }
+
         public void InitAllPossibleValues()
         {
             for (int i = 0; i < Size; i++)
@@ -68,11 +83,9 @@ namespace SudokuCracker.SudokuStructure
                     if (Cases[i, j].Value == Case.EmptyCase)
                     {
                         Cases[i, j].Hypothesies = new List<char>(Symbols);
-                        Cases[i, j].NumberHypothesis = Size;
                     }
                     else
                     {
-                        Difficulty++;
                         Cases[i, j].Hypothesies = new List<char>();
                     }
                 }
@@ -90,6 +103,7 @@ namespace SudokuCracker.SudokuStructure
                 }
                 result.Append("\n");
             }
+            result.Remove(result.Length - 1, 1);
             return result.ToString();
         }
 

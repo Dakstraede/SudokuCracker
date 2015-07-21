@@ -65,7 +65,9 @@ namespace SudokuCracker.Views
 
         private void DeleteGridButton_OnClick(object sender, RoutedEventArgs e)
         {
-            GridList.Remove((Grille) GridListBox.SelectedItem);
+            if (GridListBox.SelectedIndex == -1)
+                return;
+            GridList.RemoveAt(GridListBox.SelectedIndex);
         }
 
         private void SolveButton_OnClick(object sender, RoutedEventArgs e)
@@ -121,7 +123,9 @@ namespace SudokuCracker.Views
                         count++;
                 }
             }
-            CommentBlock.Text = grid.Comment+" "+count;
+            if(!grid.IsSolved)
+                grid.RefreshDifficulty();
+            CommentBlock.Text = String.Format("{0} \n Difficulty : {1} / {2}", grid.Comment, grid.Difficulty, grid.Size*grid.Size);
             if (grid.ErrorMessagesList.Count > 0)
             {
                 foreach (var msg in grid.ErrorMessagesList)
@@ -151,16 +155,45 @@ namespace SudokuCracker.Views
 
         private void SaveButton_Onclick(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
-            dlg.FileName = "Solved Sudokus";
-            dlg.DefaultExt = App.DefaultSupportedExtension;
-            dlg.Filter = App.SupportedExtensionFilter;
+            var solved = from grille in GridList
+                         where grille.IsSolved
+                         select grille;
+            if (!solved.Any())
+                return;
+
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog
+            {
+                FileName = "Solved Sudokus",
+                DefaultExt = App.DefaultSupportedExtension,
+                Filter = App.SupportedExtensionFilter
+            };
 
             bool? result = dlg.ShowDialog();
 
             if (result == true)
             {
-                FileSaver.SaveSolvedGrids(GridList, dlg.FileName);
+                FileSaver.SaveSolvedGrids(solved.ToList(), dlg.FileName);
+            }
+        }
+
+        private void MenuItem_Onclick_Save(object sender, RoutedEventArgs e)
+        {
+            if (GridListBox.SelectedIndex == -1)
+                return;
+            var grid = (Grille) GridListBox.SelectedItem;
+
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog
+            {
+                FileName = String.Format("Sudoku {0} - {1}", grid.Name, grid.Date),
+                DefaultExt = App.DefaultSupportedExtension,
+                Filter = App.SupportedExtensionFilter
+            };
+
+            bool? result = dlg.ShowDialog();
+
+            if (result == true)
+            {
+                FileSaver.SaveGrid(grid, dlg.FileName);
             }
         }
     }

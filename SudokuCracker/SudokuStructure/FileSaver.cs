@@ -12,24 +12,14 @@ namespace SudokuCracker.SudokuStructure
             {
                 var stream = File.CreateText(file);
 
-                var solved = from grille in grids
-                    where grille.IsSolved
-                    select grille;
-                foreach (var grid in solved)
+                
+                foreach (var grid in grids)
                 {
-                    int count = grid.Cases.GetLength(1);
                     stream.WriteLine(grid.Comment);
                     stream.WriteLine(grid.Name);
                     stream.WriteLine(grid.Date);
                     stream.WriteLine(grid.Symbols);
-                    for (int i = 0; i < count; i++)
-                    {
-                        for (int j = 0; j < count; j++)
-                        {
-                            stream.Write(grid.Cases[i,j].Value);
-                        }
-                        stream.WriteLine();
-                    }
+                    stream.WriteLine(grid);
                 }
                 stream.Close();
                 return true;
@@ -39,6 +29,26 @@ namespace SudokuCracker.SudokuStructure
                 return false;
             }
 
+        }
+
+        public static bool SaveGrid(Grille grid, string fileName)
+        {
+            try
+            {
+                var stream = File.CreateText(fileName);
+                stream.WriteLine(grid.Comment);
+                stream.WriteLine(grid.Name);
+                stream.WriteLine(grid.Date);
+                stream.WriteLine(grid.Symbols);
+                stream.WriteLine(grid);
+                stream.Close();
+
+                return true;
+            }
+            catch (IOException)
+            {
+                return false;
+            }
         }
     }
 }

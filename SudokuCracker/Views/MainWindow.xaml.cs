@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows;
-using Microsoft.Win32;
 using SudokuCracker.SudokuStructure;
 
 namespace SudokuCracker.Views
@@ -21,7 +19,7 @@ namespace SudokuCracker.Views
 
         private void FileChoose_OnClick(object sender, RoutedEventArgs e)
         {
-            var dlg = new OpenFileDialog
+            var dlg = new Microsoft.Win32.OpenFileDialog
             {
                 DefaultExt = App.DefaultSupportedExtension,
                 Filter = App.SupportedExtensionFilter

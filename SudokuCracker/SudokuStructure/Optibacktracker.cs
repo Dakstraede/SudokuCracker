@@ -27,6 +27,7 @@ namespace SudokuCracker.SudokuStructure
             {
                 eq.Add(symbol, i++);
             }
+
         }
 
         public bool Solve()
@@ -154,27 +155,6 @@ namespace SudokuCracker.SudokuStructure
                     }
                 }
             }
-
-            /*bool setValue = true;
-            int count = 0;
-            while (setValue)
-            {
-                setValue = false;
-
-                for (int i = 0; i < UnsolvedGrid.Size; i++)
-                {
-                    for (int j = 0; j < UnsolvedGrid.Size; j++)
-                    {
-                        if (UnsolvedGrid.Cases[i, j].Value == Case.EmptyCase && UnsolvedGrid.Cases[i, j].Hypothesies.Count == 1)
-                        {
-                            UnsolvedGrid.Cases[i, j].Value = UnsolvedGrid.Cases[i, j].Hypothesies.First();
-                            UnsolvedGrid.ClearPossibleValue(UnsolvedGrid.Cases[i,j].Value, i, j);
-                            setValue = true;
-                            count++;
-                        }
-                    }
-                }
-            }*/
             return (count + UnsolvedGrid.Difficulty) == UnsolvedGrid.Size;
         }
     }
