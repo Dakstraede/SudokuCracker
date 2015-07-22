@@ -96,7 +96,7 @@ namespace SudokuCracker.Views
             RefreshGridLayout();
             var validator = new SudokuValidator(solver.UnsolvedGrid);
 
-            MessageLogBlock.Text = String.Format("Sudoku solved in : {0} ms -> {1} valid : {2}",time.ElapsedMilliseconds, ((Grille)GridListBox.SelectedItem).Name, validator.ExecuteTests());
+            MessageLogBlock.Text += String.Format("Sudoku solved in : {0} ms -> {1} valid : {2}",time.ElapsedMilliseconds, ((Grille)GridListBox.SelectedItem).Name, validator.ExecuteTests());
         }
 
         private void RefreshGridLayout()
@@ -133,6 +133,8 @@ namespace SudokuCracker.Views
             if(!grid.IsSolved)
                 grid.RefreshDifficulty();
             CommentBlock.Text = String.Format("{0} \n Difficulty : {1} / {2}", grid.Comment, grid.Difficulty, grid.Size*grid.Size);
+            MessageLogBlock.Text += String.Format("Title : {0} \n Date : {1} \n Character set : {2} \n", grid.Name,
+                grid.Date, new string(grid.Symbols));
             if (grid.ErrorMessagesList.Count > 0)
             {
                 foreach (var msg in grid.ErrorMessagesList)
