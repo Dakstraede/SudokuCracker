@@ -16,6 +16,11 @@ namespace SudokuCracker.Views
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Prompts the file choosing dialog
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FileChoose_OnClick(object sender, RoutedEventArgs e)
         {
             var dlg = new Microsoft.Win32.OpenFileDialog
@@ -32,11 +37,21 @@ namespace SudokuCracker.Views
             SudFileBox.Text = dlg.FileName;
         }
 
+        /// <summary>
+        /// Detects if a file has been chosen
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SudFileBox_OnSelectionChanged(object sender, RoutedEventArgs e)
         {
             GenerateButton.IsEnabled = SudFileBox.Text.Length != 0;
         }
 
+        /// <summary>
+        /// Launch the parsing of the grids and open the Sudoku views window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GenerateButton_OnClick(object sender, RoutedEventArgs e)
         {
             string fileName = SudFileBox.Text;
@@ -67,6 +82,11 @@ namespace SudokuCracker.Views
             Close();
         }
 
+        /// <summary>
+        /// Create grids objects from a file, init them and check if they are valid
+        /// </summary>
+        /// <param name="filename">The exact location of the file containing the grids</param>
+        /// <returns>The list of parsed grids</returns>
         public static List<Grille> ParseGridsFromFile(string filename)
         {
             List<Grille> grids = new List<Grille>();

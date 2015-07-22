@@ -30,6 +30,10 @@ namespace SudokuCracker.SudokuStructure
 
         }
 
+        /// <summary>
+        /// Solve a given grid, previously initialized
+        /// </summary>
+        /// <returns>True if solved, False otherwise</returns>
         public bool Solve()
         {
             if (ClearTrivialPossibilities())
@@ -54,6 +58,11 @@ namespace SudokuCracker.SudokuStructure
             return true;
         }
 
+        /// <summary>
+        /// Internal function containing backtracking algorithm
+        /// </summary>
+        /// <param name="at"></param>
+        /// <returns></returns>
         private  bool _solve(int at = 0)
         {
             if (at == UnsolvedGrid.Size * UnsolvedGrid.Size)
@@ -75,14 +84,35 @@ namespace SudokuCracker.SudokuStructure
             return false;
         }
 
+        /// <summary>
+        /// Check whether a value is set
+        /// </summary>
+        /// <param name="r">Row index</param>
+        /// <param name="c">Column index</param>
+        /// <param name="value">The value to check</param>
+        /// <returns>True if set is possible, False otherwise</returns>
         public bool canSet(int r, int c, int value)
         {
             return !isSet(r, c) && !rowSet[r,value] && !columnSet[c,value] && !blockSet[r / UnsolvedGrid.RegionSize,c / UnsolvedGrid.RegionSize,value];
         }
+
+        /// <summary>
+        /// Check whether a value is already set
+        /// </summary>
+        /// <param name="r">Row index</param>
+        /// <param name="c">Column index</param>
+        /// <returns>True if a value is already set, False otherwise</returns>
         public bool isSet(int r, int c)
         {
             return board[r,c] != Case.EmptyCase;
         }
+
+        /// <summary>
+        /// Set a value in a given case
+        /// </summary>
+        /// <param name="r">Row index</param>
+        /// <param name="c">Column index</param>
+        /// <param name="value">The value to set</param>
         public void set(int r, int c, char value)
         {
             if (!canSet(r, c, eq[value]))
@@ -90,6 +120,12 @@ namespace SudokuCracker.SudokuStructure
             board[r,c] = value;
             rowSet[r,eq[value]] = columnSet[c,eq[value]] = blockSet[r / UnsolvedGrid.RegionSize,c / UnsolvedGrid.RegionSize,eq[value]] = true;
         }
+
+        /// <summary>
+        /// Unset a value in a given case
+        /// </summary>
+        /// <param name="r">Row index</param>
+        /// <param name="c">Column index</param>
         public void unSet(int r, int c)
         {
             if (isSet(r, c))
@@ -100,6 +136,9 @@ namespace SudokuCracker.SudokuStructure
             }
         }
 
+        /// <summary>
+        /// Init the arrays being used in the solver core
+        /// </summary>
         private void InitArrays()
         {
             for (int i = 0; i < UnsolvedGrid.Size; i++)
@@ -129,6 +168,10 @@ namespace SudokuCracker.SudokuStructure
             }
         }
 
+        /// <summary>
+        /// Set trivial values when there are some
+        /// </summary>
+        /// <returns>True if the grid is solved this way, false otherwise</returns>
         private bool ClearTrivialPossibilities()
         {
             UnsolvedGrid.InitAllPossibleValues();

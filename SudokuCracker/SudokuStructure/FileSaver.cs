@@ -5,6 +5,12 @@ namespace SudokuCracker.SudokuStructure
 {
     public static class FileSaver
     {
+        /// <summary>
+        /// Save multiple grids into a new file
+        /// </summary>
+        /// <param name="grids">Grids to be saved</param>
+        /// <param name="file">Exact location of the file where grids will be saved</param>
+        /// <returns></returns>
         public static bool SaveSolvedGrids(IList<Grille> grids, string file)
         {
             try
@@ -30,6 +36,12 @@ namespace SudokuCracker.SudokuStructure
 
         }
 
+        /// <summary>
+        /// Save a single grid into a new file
+        /// </summary>
+        /// <param name="grid">The grid to be saved</param>
+        /// <param name="fileName">Exact location of the file where the grid will be saved</param>
+        /// <returns></returns>
         public static bool SaveGrid(Grille grid, string fileName)
         {
             try

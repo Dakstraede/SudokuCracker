@@ -37,6 +37,10 @@ namespace SudokuCracker.SudokuStructure
             _grid = grid;
         }
 
+        /// <summary>
+        /// Execute all tests determining if the grid is valid or not
+        /// </summary>
+        /// <returns></returns>
         public bool ExecuteTests()
         {
             try

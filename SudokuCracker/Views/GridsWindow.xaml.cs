@@ -25,6 +25,11 @@ namespace SudokuCracker.Views
             DataContext = this;
         }
 
+        /// <summary>
+        /// Detects when selected grid changes, in order to refresh the layout
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {     
             if (e.AddedItems.Count == 0)
@@ -35,6 +40,14 @@ namespace SudokuCracker.Views
             RefreshGridLayout();
         }
 
+        /// <summary>
+        /// Create a case view in a specific location in the grid
+        /// </summary>
+        /// <param name="case">Case object where value is retrieved</param>
+        /// <param name="i">Row index</param>
+        /// <param name="j">Column index</param>
+        /// <param name="regionSize">The size of region side, for calculating purposes</param>
+        /// <returns>Case view object</returns>
         private FrameworkElement CreateCaseView(Case @case, int i, int j, int regionSize)
         {
             int regionNb = ((i/regionSize)*regionSize) + (j/regionSize);
@@ -60,6 +73,9 @@ namespace SudokuCracker.Views
             return border;
         }
 
+        /// <summary>
+        /// Clean the sudoku grid view
+        /// </summary>
         private void ClearSudokuGridView()
         {
             SolveButton.IsEnabled = false;
@@ -70,6 +86,11 @@ namespace SudokuCracker.Views
             CommentBlock.Text = String.Empty;
         }
 
+        /// <summary>
+        /// Delete the current selected grid from the list
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DeleteGridButton_OnClick(object sender, RoutedEventArgs e)
         {
             if (GridListBox.SelectedIndex == -1)
@@ -77,6 +98,11 @@ namespace SudokuCracker.Views
             GridList.RemoveAt(GridListBox.SelectedIndex);
         }
 
+        /// <summary>
+        /// Solve the current selected grid and display it 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SolveButton_OnClick(object sender, RoutedEventArgs e)
         {
             var solver = new Optibacktracker((Grille)GridListBox.SelectedItem);
@@ -99,6 +125,9 @@ namespace SudokuCracker.Views
             MessageLogBlock.Text += String.Format("Sudoku solved in : {0} ms -> {1} valid : {2}",time.ElapsedMilliseconds, ((Grille)GridListBox.SelectedItem).Name, validator.ExecuteTests());
         }
 
+        /// <summary>
+        /// Refresh the sudoku grid view with current selected grid informations
+        /// </summary>
         private void RefreshGridLayout()
         {
             ClearSudokuGridView();
@@ -144,16 +173,30 @@ namespace SudokuCracker.Views
             }
         }
 
+        /// <summary>
+        /// Generate a 9 size Sudoku
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Gen9Button_OnClick(object sender, RoutedEventArgs e)
         {
             Generate(Generator.Sizes.Size9);
         }
 
+        /// <summary>
+        /// Generate a 16 size Sudoku
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Gen16Button_OnClick(object sender, RoutedEventArgs e)
         {
             Generate(Generator.Sizes.Size16);
         }
 
+        /// <summary>
+        /// Generate a grid of the given size and add it to the list
+        /// </summary>
+        /// <param name="size"></param>
         private void Generate(Generator.Sizes size)
         {
             var grid = Generator.Generate(size);
@@ -162,6 +205,11 @@ namespace SudokuCracker.Views
             GridListBox.ScrollIntoView(GridListBox.SelectedItem);
         }
 
+        /// <summary>
+        /// Save all solved grids to a single file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaveButton_Onclick(object sender, RoutedEventArgs e)
         {
             var solved = from grille in GridList
@@ -185,6 +233,11 @@ namespace SudokuCracker.Views
             }
         }
 
+        /// <summary>
+        /// Save the selected grid to a file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MenuItem_Onclick_Save(object sender, RoutedEventArgs e)
         {
             if (GridListBox.SelectedIndex == -1)
@@ -206,6 +259,11 @@ namespace SudokuCracker.Views
             }
         }
 
+        /// <summary>
+        /// Import new grids to the list from a file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddGridsButton_OnClick(object sender, RoutedEventArgs e)
         {
             var dlg = new Microsoft.Win32.OpenFileDialog

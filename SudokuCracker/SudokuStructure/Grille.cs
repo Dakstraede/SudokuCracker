@@ -33,6 +33,10 @@ namespace SudokuCracker.SudokuStructure
             Difficulty = 0;
         }
 
+        /// <summary>
+        /// Set all cases from a set of lines
+        /// </summary>
+        /// <param name="lines">Enumerable of strings, each string being a row</param>
         public void InitializeCases(IEnumerable<string> lines )
         {
             int count = Symbols.Count();
@@ -46,6 +50,9 @@ namespace SudokuCracker.SudokuStructure
             }
         }
 
+        /// <summary>
+        /// Init all cases with empty value
+        /// </summary>
         public void InitializeCases()
         {
             Cases= new Case[Size, Size];
@@ -58,6 +65,9 @@ namespace SudokuCracker.SudokuStructure
             }
         }
 
+        /// <summary>
+        /// Recalculate the difficulty (number of setted values in the grid)
+        /// </summary>
         public void RefreshDifficulty()
         {
             Difficulty = 0;
@@ -73,6 +83,9 @@ namespace SudokuCracker.SudokuStructure
             }
         }
 
+        /// <summary>
+        /// Init all hypothesies on each empty case
+        /// </summary>
         public void InitAllPossibleValues()
         {
             for (int i = 0; i < Size; i++)
@@ -91,6 +104,10 @@ namespace SudokuCracker.SudokuStructure
             }
         }
 
+        /// <summary>
+        /// Make all cases to a string
+        /// </summary>
+        /// <returns>The string containing all cases values, each line separated with NewLine</returns>
         public override string ToString()
         {
             StringBuilder result = new StringBuilder();
@@ -106,6 +123,12 @@ namespace SudokuCracker.SudokuStructure
             return result.ToString();
         }
 
+        /// <summary>
+        /// Remove an hypothesis from a specific place, including line, column and block
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="line"></param>
+        /// <param name="col"></param>
         public void ClearPossibleValue(char value, int line, int col)
         {
             ClearPossibilityOnLine(value, line);
@@ -113,6 +136,11 @@ namespace SudokuCracker.SudokuStructure
             ClearPossibilityOnBlock(value, line, col);
         }
 
+        /// <summary>
+        /// Remove hypothesis from a line
+        /// </summary>
+        /// <param name="value">The hypothesis value to be removed</param>
+        /// <param name="line">The line where the hypothesis will be removed</param>
         private void ClearPossibilityOnLine(char value, int line)
         {
             for (int i = 0; i < Size; i++)
@@ -124,6 +152,11 @@ namespace SudokuCracker.SudokuStructure
             }
         }
 
+        /// <summary>
+        /// Remove hypothesis from a column
+        /// </summary>
+        /// <param name="value">The hypothesis value to be removed</param>
+        /// <param name="col">The column where the hypothesis will be removedz</param>
         private void ClearPossibilityOnColumn(char value, int col)
         {
             for (int i = 0; i < Size; i++)
@@ -135,6 +168,12 @@ namespace SudokuCracker.SudokuStructure
             }
         }
 
+        /// <summary>
+        /// Remove an hypothesis from a block
+        /// </summary>
+        /// <param name="value">Tthe hypothesis value to be removed</param>
+        /// <param name="line">Index of calling line</param>
+        /// <param name="col">Index of calling ccolumn</param>
         private void ClearPossibilityOnBlock(char value, int line, int col)
         {
             int startLine = line - (line%RegionSize);
