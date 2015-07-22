@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace SudokuCracker.SudokuStructure
 {
@@ -41,8 +40,7 @@ namespace SudokuCracker.SudokuStructure
                 stream.WriteLine(grid.Date);
                 stream.WriteLine(grid.Symbols);
                 stream.WriteLine(grid);
-                stream.Close();
-
+                
                 return true;
             }
             catch (IOException)

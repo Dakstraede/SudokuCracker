@@ -35,11 +35,18 @@ namespace SudokuCracker.Views
             RefreshGridLayout();
         }
 
-        private FrameworkElement CreateCaseView(Case @case, int i, int j)
+        private FrameworkElement CreateCaseView(Case @case, int i, int j, int regionSize)
         {
-            Border border = new Border();
-            border.BorderBrush = Brushes.Black;
-            border.BorderThickness = new Thickness(1);
+            int regionNb = ((i/regionSize)*regionSize) + (j/regionSize);
+            
+            Border border = new Border
+            {
+                BorderBrush = Brushes.Black, 
+                BorderThickness = new Thickness(1)
+            };
+            if ((regionSize%2 == 0 && (((regionNb/regionSize)%2 == 0 && regionNb%2 == 0) || ((regionNb/regionSize)%2 == 1 && regionNb%2 == 1)))
+                || (regionSize % 2 == 1 && (((regionNb / regionSize) % 2 == 0 && regionNb % 2 == 0) || (regionNb/regionSize)%2 ==1 && regionNb%2 == 0)))
+                border.Background = Brushes.LightGray;
             string text = (@case.Value.Equals(Case.EmptyCase) ? "" : @case.Value.ToString());
             border.Child = new TextBlock()
             {
@@ -110,7 +117,7 @@ namespace SudokuCracker.Views
             {
                 for (int j = 0; j < gridSize; j++)
                 {
-                    FrameworkElement elem = CreateCaseView(grid.Cases[i, j], i, j);
+                    FrameworkElement elem = CreateCaseView(grid.Cases[i, j], i, j, grid.RegionSize);
                     SudokuViewGrid.Children.Add(elem);
                 }
             }
@@ -195,6 +202,40 @@ namespace SudokuCracker.Views
             {
                 FileSaver.SaveGrid(grid, dlg.FileName);
             }
+        }
+
+        private void AddGridsButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                DefaultExt = App.DefaultSupportedExtension,
+                Filter = App.SupportedExtensionFilter
+            };
+
+            var result = dlg.ShowDialog();
+
+
+            if (result != true) 
+                return;
+
+            try
+            {
+                var newGrids = MainWindow.ParseGridsFromFile(dlg.FileName);
+                foreach (var newGrid in newGrids)
+                {
+                    GridList.Add(newGrid);
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("The file you specified contains format errors that can not be handled",
+                   "Invalid file",
+                   MessageBoxButton.OK,
+                   MessageBoxImage.Error);
+                return;
+            }
+            GridListBox.SelectedIndex = GridListBox.Items.Count - 1;
+            GridListBox.ScrollIntoView(GridListBox.SelectedItem);
         }
     }
 }

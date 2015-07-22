@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 
 namespace SudokuCracker.SudokuStructure
@@ -9,27 +10,21 @@ namespace SudokuCracker.SudokuStructure
     {
         public static readonly List<char> Tab9 = new List<char> {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
         public static readonly List<char> Tab16 = new List<char> {'1', '2', '3', '4', '5', '6', '7', '8', '9','A','B','C','D','E','F','G'};
-        public static readonly List<char> Tab25 = new List<char> {'1', '2', '3', '4', '5', '6', '7', '8', '9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P'};
         public static int NbGeneratedGrids = 1;
-        public enum Sizes{ Size9, Size16, Size25 }
+        public enum Sizes{ Size9, Size16 }
 
         public static Grille Generate(Sizes size = Sizes.Size9)
         {
-            List<char> chosen;
-            if (size == Sizes.Size9)
-                chosen = Tab9;
-            else
-                chosen = Tab16;
+            List<char> chosen = size == Sizes.Size9 ? Tab9 : Tab16;
 
             Grille grid = new Grille("This is a generated grid", "GenGrid "+NbGeneratedGrids, DateTime.Now.ToShortDateString(), chosen.Shuffle().ToArray());
             grid.InitializeCases();
-            
-
 
             var solver = new Optibacktracker(grid);
             solver.Solve();
             NbGeneratedGrids++;
-            var res = MakeHoles(solver.UnsolvedGrid);
+
+            Grille res = MakeHoles(solver.UnsolvedGrid);
             res.RefreshDifficulty();
             return res;
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using SudokuCracker.SudokuStructure;
@@ -50,28 +49,10 @@ namespace SudokuCracker.Views
                 return;
             }
 
-            List<Grille> grids = new List<Grille>();
-            Stopwatch watch  =new Stopwatch();
-            watch.Start();
+            List<Grille> grids;
             try
             {
-                var file = new StreamReader(fileName);
-                string line;
-                
-                while ((line = file.ReadLine()) != null)
-                {
-                    var grid = new Grille(line, file.ReadLine(), file.ReadLine(), file.ReadLine().ToCharArray());
-
-                    string[] tempLines = new string[grid.Symbols.Length];
-                    for (int j = 0; j < grid.Symbols.Length; j++)
-                    {
-                        tempLines[j] = file.ReadLine();
-                    }
-
-                    var validator = new SudokuValidator(grid.Symbols, tempLines, ref grid);
-                    validator.ExecuteTests();
-                    grids.Add(grid);
-                }
+                grids = ParseGridsFromFile(fileName);
             }
             catch (Exception)
             {
@@ -84,6 +65,30 @@ namespace SudokuCracker.Views
             GridsWindow gridWindow = new GridsWindow(grids);
             gridWindow.Show();
             Close();
+        }
+
+        public static List<Grille> ParseGridsFromFile(string filename)
+        {
+            List<Grille> grids = new List<Grille>();
+            var file = new StreamReader(filename);
+
+            string line;
+
+            while ((line = file.ReadLine()) != null)
+            {
+                var grid = new Grille(line, file.ReadLine(), file.ReadLine(), file.ReadLine().ToCharArray());
+
+                string[] tempLines = new string[grid.Symbols.Length];
+                for (int j = 0; j < grid.Symbols.Length; j++)
+                {
+                    tempLines[j] = file.ReadLine();
+                }
+
+                var validator = new SudokuValidator(grid.Symbols, tempLines, ref grid);
+                validator.ExecuteTests();
+                grids.Add(grid);
+            }
+            return grids;
         }
     }
 }
