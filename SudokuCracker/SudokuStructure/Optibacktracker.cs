@@ -71,7 +71,7 @@ namespace SudokuCracker.SudokuStructure
             int c = at % UnsolvedGrid.Size;
             if (isSet(r, c))
                 return _solve(at + 1);
-            foreach(var elem in UnsolvedGrid.Symbols)
+            foreach(var elem in UnsolvedGrid.Cases[r,c].Hypothesies)
             {
                 if (canSet(r, c, eq[elem]))
                 {
